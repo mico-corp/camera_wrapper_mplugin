@@ -21,15 +21,21 @@
 
 
 #include <flow/flow.h>
+#include <mico/camera_wrapper/flow/StreamDataset.h>
+#include <mico/camera_wrapper/flow/StreamKinect.h>
+#include <mico/camera_wrapper/flow/StreamRealSense.h>
+#include <mico/camera_wrapper/flow/StreamWebcam.h>
+
+using namespace mico;
+using namespace flow;
 
 extern "C" flow::PluginNodeCreator* factory(){
     flow::PluginNodeCreator *creator = new flow::PluginNodeCreator;
 
-    // creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamDataset, true    >>(); });
-    // creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSense, true  >>(); });
-    // creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamKinect, true     >>(); });
-    // creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamPixhawk, true    >>(); });
-    // creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamWebcam, true     >>(); });
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamDataset, true    >>(); });
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSense, true  >>(); });
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamKinect, true     >>(); });
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamWebcam, true     >>(); });
 
     return creator;
 }
