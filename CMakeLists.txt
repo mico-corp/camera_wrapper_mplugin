@@ -31,7 +31,7 @@ file(GLOB_RECURSE MICO_CAMERA_WRAPPER_SOURCE_FILES "src/*.cpp" "src/*.c")
 file(GLOB_RECURSE MICO_CAMERA_WRAPPER_HEADER_FILES "include/*.h" "include/*.inl")
  
 add_library(${COMPONENT_NAME} SHARED ${MICO_CAMERA_WRAPPER_HEADER_FILES} ${MICO_CAMERA_WRAPPER_SOURCE_FILES})
-target_compile_features(${COMPONENT_NAME} PUBLIC cxx_std_11)
+target_compile_features(${COMPONENT_NAME} PUBLIC cxx_std_17)
 target_include_directories(${COMPONENT_NAME}
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -58,6 +58,14 @@ endif()
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/" ${CMAKE_MODULE_PATH})
 
 target_compile_options(${COMPONENT_NAME} PUBLIC "-Wall")
+
+
+find_package(NodeEditor)
+if(${NodeEditor_FOUND})
+  target_include_directories(${COMPONENT_NAME}  PUBLIC ${NodeEditor_INCLUDE_DIRS})
+  target_link_libraries(${COMPONENT_NAME}  LINK_PUBLIC ${NodeEditor_LIBRARIES})
+  target_compile_definitions(${COMPONENT_NAME} PUBLIC HAS_QTNODEEDITOR)
+endif()
 
 #########################################
 ## Load librealsense
@@ -235,5 +243,5 @@ endif()
 
 # FLOW INSTALL target 
 add_custom_target(flow_install
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/lib${COMPONENT_NAME}.so $ENV{HOME}/.flow/plugin/lib${COMPONENT_NAME}.so
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/lib${COMPONENT_NAME}.so $ENV{HOME}/.flow/plugins/lib${COMPONENT_NAME}.so
 )
