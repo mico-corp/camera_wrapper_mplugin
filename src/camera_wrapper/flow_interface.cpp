@@ -32,10 +32,10 @@ using namespace flow;
 extern "C" flow::PluginNodeCreator* factory(){
     flow::PluginNodeCreator *creator = new flow::PluginNodeCreator;
 
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamDataset, true    >>(); });
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSense, true  >>(); });
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamKinect, true     >>(); });
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamWebcam, true     >>(); });
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamDataset, true    >>(); }, "camera_wrapper");
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSense, true  >>(); }, "camera_wrapper");
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamKinect, true     >>(); }, "camera_wrapper");
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamWebcam, true     >>(); }, "camera_wrapper");
 
     return creator;
 }
