@@ -19,6 +19,6 @@ endif()
 find_dependency(OpenGL REQUIRED)
 find_package(OpenCV REQUIRED)
 
-if(NOT TARGET mico::base)
+if(NOT TARGET mico::mico-camera_wrapper)
     include("${mico_CMAKE_DIR}/mico-base-targets.cmake")
 endif()
