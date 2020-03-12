@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
-//  mico
+//  Cameras wrapper MICO plugin
 //---------------------------------------------------------------------------------------------------------------------
-//  Copyright 2018 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
+//  Copyright 2020 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
 //---------------------------------------------------------------------------------------------------------------------
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,30 +20,43 @@
 //---------------------------------------------------------------------------------------------------------------------
 
 
-#ifndef MICO_BASE_VISION_STEREOCAMERAS_STEREOCAMERAKINECT_H_
-#define MICO_BASE_VISION_STEREOCAMERAS_STEREOCAMERAKINECT_H_
+#ifndef MICO_BASE_VISION_STEREOCAMERAS_STEREOCAMERAROS_H_
+#define MICO_BASE_VISION_STEREOCAMERAS_STEREOCAMERAROS_H_
 
 
-#include <mico/camera_wrapper/StereoCamera.h>
-#ifdef ENABLE_LIBFREENECT
-	#include <libfreenect/libfreenect.h>
-	#include <libfreenect/libfreenect_sync.h>
+#include <mico/cameras_wrapper/StereoCamera.h>
+#ifdef RGBDTOOLS_USE_ROS
+	#include <ros/ros.h>
+	#include <image_transport/image_transport.h>
 #endif 
 
 #include <mutex>
 #include <thread>
 
 namespace mico {
-	/// Wrapper for IntelReal Sense 3D camera.
-    class StereoCameraKinect :public StereoCamera {
+	/// Wrapper for generic ROS camera
+    class StereoCameraRos :public StereoCamera {
 	public:		// Public interface
-        ~StereoCameraKinect();
+        ~StereoCameraRos();
         /// \brief Initialize the camera using a config file. The coordinate system for the 3d is always on the color camera.
 		/// Config file must have following structure.
 		///
 		/// \code
 		///     {
-        ///
+        ///			"left":"Topic to left camera, if camera is structural light, then left is the only color camera",
+		///			"right":"In case of stereo camera, topic to right camera",
+		///			"depth":"Topic to depth camera",
+		///			"depth_encoding":"16U|32F",
+		///			"calibration":
+		///				{
+		///					"type":"topic|file",
+		///					"config":
+		///						{
+		///							"topic":"In case of topic type camera info, topic to camera info",
+		///							"file_path":"In case of file type, path to camera calibration file"
+		///						}	
+		///				}m
+		///			"cloud":"Topic to cloud"
 		///     }
 		/// \endcode
 		///
@@ -99,34 +112,31 @@ namespace mico {
         bool colorPixelToPoint(const cv::Point2f &_pixel, cv::Point3f &_point);
 
     private:	//	Private interface
-
+		#ifdef RGBDTOOLS_USE_ROS
+			void leftCallback(const sensor_msgs::Image::ConstPtr &_msg);
+			void rightCallback(const sensor_msgs::Image::ConstPtr &_msg);
+			void depthCallback(const sensor_msgs::Image::ConstPtr &_msg);
+		#endif
 	private:	// Private members
 		cjson::Json mConfig;
-        static cv::Mat mLastRGB, mRight, mLastDepthInColor;
-		#ifdef ENABLE_LIBFREENECT
-			freenect_context *mFreenectContext = nullptr;
-			freenect_device *mFreenectDevice = nullptr;
+        cv::Mat mLastRGB, mRight, mLastDepthInColor;
+		
+		#ifdef RGBDTOOLS_USE_ROS
+			image_transport::Subscriber mSubscriberLeft, mSubscriberRight, mSubscriberDepth;
+			ros::Subscriber mSubscriberCloud;
 		#endif        
-		static std::mutex mRgbMutex, mDepthMutex;
-        std::thread mFreenectEventProcessor;
-        bool mRunning = true;
+		bool mRunning = true;
 
         bool mHasRGB = false, mComputedDepth = false;
 
         bool mHasCalibration = false;
         cv::Mat mMatrixLeft, mDistCoefLeft, mMatrixRight, mDistCoefRight, mRot, mTrans;
         double mDispToDepth;
-    // PRIVATE STATIC MEMBERS
-    private:
-        static bool mIsCurrentlyEnabled;    //666 Current implementation only allows the use of one camera.
-		#ifdef ENABLE_LIBFREENECT
-			static void rgbCallback(freenect_device *dev, void *rgb, uint32_t timestamp);
-			static void depthCallback(freenect_device *dev, void *depth, uint32_t timestamp);
-		#endif
+
 	};	//	class StereoCameraRealSense
 
 }	//	namespace mico 
 
-#include <mico/camera_wrapper/StereoCameras/StereoCameraKinect.inl>
+#include <mico/cameras_wrapper/StereoCameras/StereoCameraRos.inl>
 
-#endif  // RGBDSLAM_VISION_STEREOCAMERAS_STEREOCAMERAREALSENSE_H_
+#endif  // RGBDSLAM_VISION_STEREOCAMERAS_STEREOCAMERAROS_H_

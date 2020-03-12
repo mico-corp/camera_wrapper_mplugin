@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
-//  mico
+//  Cameras wrapper MICO plugin
 //---------------------------------------------------------------------------------------------------------------------
-//  Copyright 2018 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
+//  Copyright 2020 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
 //---------------------------------------------------------------------------------------------------------------------
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -25,7 +25,7 @@
 namespace mico {
     //---------------------------------------------------------------------------------------------------------------------
     template<typename PointType_>
-    bool StereoCameraRos::cloud(pcl::PointCloud<PointType_> &_cloud) {
+    bool StereoCameraKinect::cloud(pcl::PointCloud<PointType_> &_cloud) {
 
         pcl::PointCloud<pcl::PointXYZRGB> cloudWoNormals;
         if (!cloud(cloudWoNormals)) {

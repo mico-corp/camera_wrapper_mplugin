@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
-//  mico
+//  Cameras wrapper MICO plugin
 //---------------------------------------------------------------------------------------------------------------------
-//  Copyright 2018 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
+//  Copyright 2020 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
 //---------------------------------------------------------------------------------------------------------------------
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -19,16 +19,15 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------------------------------------------------
 
+#include <mico/cameras_wrapper/StereoCamera.h>
 
-#include <mico/camera_wrapper/StereoCamera.h>
-
-#include <mico/camera_wrapper/StereoCameras/StereoCameraVirtual.h>
-#include <mico/camera_wrapper/StereoCameras/StereoCameraZED.h>
-#include <mico/camera_wrapper/StereoCameras/StereoCameraCustom.h>
-#include <mico/camera_wrapper/StereoCameras/StereoCameraRealSense.h>
-#include <mico/camera_wrapper/StereoCameras/StereoCameraKinect.h>
-#include <mico/camera_wrapper/StereoCameras/StereoCameraRos.h>
-#include <mico/camera_wrapper/StereoCameras/StereoCameraRosBag.h>
+#include <mico/cameras_wrapper/StereoCameras/StereoCameraVirtual.h>
+#include <mico/cameras_wrapper/StereoCameras/StereoCameraZED.h>
+#include <mico/cameras_wrapper/StereoCameras/StereoCameraCustom.h>
+#include <mico/cameras_wrapper/StereoCameras/StereoCameraRealSense.h>
+#include <mico/cameras_wrapper/StereoCameras/StereoCameraKinect.h>
+#include <mico/cameras_wrapper/StereoCameras/StereoCameraRos.h>
+#include <mico/cameras_wrapper/StereoCameras/StereoCameraRosBag.h>
 
 
 namespace mico {

@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
-//  mico
+//  Cameras wrapper MICO plugin
 //---------------------------------------------------------------------------------------------------------------------
-//  Copyright 2018 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
+//  Copyright 2020 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
 //---------------------------------------------------------------------------------------------------------------------
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,11 +20,11 @@
 //---------------------------------------------------------------------------------------------------------------------
 
 
-#include <mico/camera_wrapper/StereoCameras/StereoCameraCustom.h>
+#include <mico/cameras_wrapper/StereoCameras/StereoCameraCustom.h>
 #ifdef USE_LIBELAS
 #include <libelas/elas.h>
 #endif
-#include <mico/camera_wrapper/StereoCameras/ParallelFeatureMatcher.h>
+#include <mico/cameras_wrapper/StereoCameras/ParallelFeatureMatcher.h>
 #include <thread>
 #include <chrono>
 

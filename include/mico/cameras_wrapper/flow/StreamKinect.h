@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
-//  mico
+//  Cameras wrapper MICO plugin
 //---------------------------------------------------------------------------------------------------------------------
-//  Copyright 2018 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
+//  Copyright 2020 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
 //---------------------------------------------------------------------------------------------------------------------
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -21,33 +21,33 @@
 
 
 
-#ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMWEBCAM_H_
-#define MICO_FLOW_BLOCKS_STREAMERS_STREAMWEBCAM_H_
+#ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMKINECT_H_
+#define MICO_FLOW_BLOCKS_STREAMERS_STREAMKINECT_H_
 
 #include <flow/Block.h>
-#include <opencv2/opencv.hpp>
+
+#include <mico/cameras_wrapper/StereoCameras/StereoCameraKinect.h>
 
 namespace mico{
 
-    class StreamWebcam:public flow::Block{
+    class StreamKinect:public flow::Block{
     public:
-        virtual std::string name() const override {return "Streamer Webcam";}
+        virtual std::string name() const override {return "Kinect Streamer";}
         
-        StreamWebcam();
-        ~StreamWebcam();
+        StreamKinect();
+        // ~StreamKinect(){};
         
         virtual bool configure(std::unordered_map<std::string, std::string> _params) override;
         std::vector<std::string> parameters() override;
-        
-        std::string description() const override {return    "Streamer block that reads from usb ready cameras "
-                                                            "connected to the computer and streams its images.\n"
+    
+        std::string description() const override {return    "Streamer block that reads from an Intel realsense device and streams its flows of images.\n"
                                                             "   - Outputs: \n";};
-                                                            
     protected:
         virtual void loopCallback() override;
 
     private:
-        cv::VideoCapture *camera_ = nullptr;
+        StereoCameraKinect camera_;
+        bool hasInitCamera_ = false;
     };
 
 }

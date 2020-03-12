@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
-//  mico
+//  Cameras wrapper MICO plugin
 //---------------------------------------------------------------------------------------------------------------------
-//  Copyright 2018 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
+//  Copyright 2020 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
 //---------------------------------------------------------------------------------------------------------------------
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -21,33 +21,33 @@
 
 
 
-#ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_H_
-#define MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_H_
+#ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMWEBCAM_H_
+#define MICO_FLOW_BLOCKS_STREAMERS_STREAMWEBCAM_H_
 
 #include <flow/Block.h>
-
-#include <mico/camera_wrapper/StereoCameras/StereoCameraRealSense.h>
+#include <opencv2/opencv.hpp>
 
 namespace mico{
 
-    class StreamRealSense:public flow::Block{
+    class StreamWebcam:public flow::Block{
     public:
-        virtual std::string name() const override {return "RealSense Streamer";}
+        virtual std::string name() const override {return "Streamer Webcam";}
         
-        StreamRealSense();
-        ~StreamRealSense(){};
+        StreamWebcam();
+        ~StreamWebcam();
         
         virtual bool configure(std::unordered_map<std::string, std::string> _params) override;
         std::vector<std::string> parameters() override;
-    
-        std::string description() const override {return    "Streamer block that reads from an Intel realsense device and streams its flows of images.\n"
+        
+        std::string description() const override {return    "Streamer block that reads from usb ready cameras "
+                                                            "connected to the computer and streams its images.\n"
                                                             "   - Outputs: \n";};
+                                                            
     protected:
         virtual void loopCallback() override;
 
     private:
-        StereoCameraRealSense camera_;
-        bool hasInitCamera_ = false;
+        cv::VideoCapture *camera_ = nullptr;
     };
 
 }

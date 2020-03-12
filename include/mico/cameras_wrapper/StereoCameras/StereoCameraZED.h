@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
-//  mico
+//  Cameras wrapper MICO plugin
 //---------------------------------------------------------------------------------------------------------------------
-//  Copyright 2018 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
+//  Copyright 2020 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
 //---------------------------------------------------------------------------------------------------------------------
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -24,7 +24,7 @@
 #define MICO_BASE_VISION_STEREOCAMERAS_STEREOCAMERAZED_H_
 
 
-#include <mico/camera_wrapper/StereoCamera.h>
+#include <mico/cameras_wrapper/StereoCamera.h>
 
 #ifdef HAS_ZED_SDK
     #include <zed/Camera.hpp>

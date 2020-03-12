@@ -23,9 +23,9 @@
 //----------------------------------------------------------------------------------------------------------------------
 // Simple Json C++ library
 //----------------------------------------------------------------------------------------------------------------------
-#include <mico/camera_wrapper/cjson/json.h>
-#include <mico/camera_wrapper/cjson/parser.h>
-#include <mico/camera_wrapper/cjson/serializer.h>
+#include <mico/cameras_wrapper/cjson/json.h>
+#include <mico/cameras_wrapper/cjson/parser.h>
+#include <mico/cameras_wrapper/cjson/serializer.h>
 #include <cassert>
 #include <new> // Placement new
 #include <sstream>

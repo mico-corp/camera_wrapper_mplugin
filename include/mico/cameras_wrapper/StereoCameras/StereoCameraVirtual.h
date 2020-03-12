@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
-//  mico
+//  Cameras wrapper MICO plugin
 //---------------------------------------------------------------------------------------------------------------------
-//  Copyright 2018 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
+//  Copyright 2020 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
 //---------------------------------------------------------------------------------------------------------------------
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -25,7 +25,7 @@
 #define MICO_BASE_VISION_STEREOCAMERAS_STEREOCAMERAVIRTUAL_H_
 
 
-#include <mico/camera_wrapper/StereoCamera.h>
+#include <mico/cameras_wrapper/StereoCamera.h>
 namespace mico {
 	/// Util class to simulate an stereo camera using a dataset.
 	class StereoCameraVirtual :public StereoCamera {
@@ -126,6 +126,6 @@ namespace mico {
 	};
 }	//	namespace mico 
 
-#include <mico/camera_wrapper/StereoCameras//StereoCameraVirtual.inl>
+#include <mico/cameras_wrapper/StereoCameras//StereoCameraVirtual.inl>
 
 #endif		// RGBDSLAM_VISION_STEREOCAMERAS_STEREOCAMERAVIRTUAL_H_

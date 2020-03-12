@@ -23,11 +23,11 @@
 //----------------------------------------------------------------------------------------------------------------------
 // Simple Json C++ library
 //----------------------------------------------------------------------------------------------------------------------
-#include <mico/camera_wrapper/cjson/parser.h>
+#include <mico/cameras_wrapper/cjson/parser.h>
 #include <cstring>
 #include <sstream>
 #include <string>
-#include <mico/camera_wrapper/cjson/json.h>
+#include <mico/cameras_wrapper/cjson/json.h>
 
 #if defined(_WIN32) && defined(_DEBUG) // Trace memory leaks
 #define _CRTDBG_MAP_ALLOC

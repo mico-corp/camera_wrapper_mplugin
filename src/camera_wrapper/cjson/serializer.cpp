@@ -23,8 +23,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 // Simple Json C++ library
 //----------------------------------------------------------------------------------------------------------------------
-#include <mico/camera_wrapper/cjson/serializer.h>
-#include <mico/camera_wrapper/cjson/json.h>
+#include <mico/cameras_wrapper/cjson/serializer.h>
+#include <mico/cameras_wrapper/cjson/json.h>
 
 #include <cassert>
 

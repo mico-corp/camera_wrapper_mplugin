@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
-//  mico
+//  Cameras wrapper MICO plugin
 //---------------------------------------------------------------------------------------------------------------------
-//  Copyright 2018 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
+//  Copyright 2020 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
 //---------------------------------------------------------------------------------------------------------------------
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -20,14 +20,16 @@
 //---------------------------------------------------------------------------------------------------------------------
 
 
-#ifndef MICO_BASE_VISION_STEREOCAMERAS_STEREOCAMERAROS_H_
-#define MICO_BASE_VISION_STEREOCAMERAS_STEREOCAMERAROS_H_
+#ifndef MICO_BASE_VISION_STEREOCAMERAS_StereoCameraRosBag_H_
+#define MICO_BASE_VISION_STEREOCAMERAS_StereoCameraRosBag_H_
 
 
-#include <mico/camera_wrapper/StereoCamera.h>
+#include <mico/cameras_wrapper/StereoCamera.h>
 #ifdef RGBDTOOLS_USE_ROS
 	#include <ros/ros.h>
 	#include <image_transport/image_transport.h>
+	#include <rosbag/bag.h>
+    #include <rosbag/view.h>
 #endif 
 
 #include <mutex>
@@ -35,9 +37,9 @@
 
 namespace mico {
 	/// Wrapper for generic ROS camera
-    class StereoCameraRos :public StereoCamera {
+    class StereoCameraRosBag :public StereoCamera {
 	public:		// Public interface
-        ~StereoCameraRos();
+        ~StereoCameraRosBag();
         /// \brief Initialize the camera using a config file. The coordinate system for the 3d is always on the color camera.
 		/// Config file must have following structure.
 		///
@@ -111,32 +113,39 @@ namespace mico {
 
         bool colorPixelToPoint(const cv::Point2f &_pixel, cv::Point3f &_point);
 
-    private:	//	Private interface
-		#ifdef RGBDTOOLS_USE_ROS
-			void leftCallback(const sensor_msgs::Image::ConstPtr &_msg);
-			void rightCallback(const sensor_msgs::Image::ConstPtr &_msg);
-			void depthCallback(const sensor_msgs::Image::ConstPtr &_msg);
-		#endif
+	private:
+		template<typename PointType_>
+		bool setOrganizedAndDense(pcl::PointCloud<PointType_> &_cloud);
+
 	private:	// Private members
 		cjson::Json mConfig;
         cv::Mat mLastRGB, mRight, mLastDepthInColor;
 		
 		#ifdef RGBDTOOLS_USE_ROS
-			image_transport::Subscriber mSubscriberLeft, mSubscriberRight, mSubscriberDepth;
-			ros::Subscriber mSubscriberCloud;
-		#endif        
-		bool mRunning = true;
-
-        bool mHasRGB = false, mComputedDepth = false;
+ 			rosbag::Bag mBag;
+			rosbag::View  *leftView, *rightView, *depthView;
+			rosbag::View::iterator leftIt, rightIt, depthIt;
+ 		#endif        
+        bool mHasLeft = false, mHasRight = false, mHasDepth = false;
 
         bool mHasCalibration = false;
         cv::Mat mMatrixLeft, mDistCoefLeft, mMatrixRight, mDistCoefRight, mRot, mTrans;
         double mDispToDepth;
 
-	};	//	class StereoCameraRealSense
+	};	//	class StereoCameraRosBag
+
+
+
+	template<typename PointType_>
+	inline bool StereoCameraRosBag::setOrganizedAndDense(pcl::PointCloud<PointType_> &_cloud) {
+		_cloud.is_dense = true; // 666 TODO: cant set to true if wrong points are set to NaN.
+		_cloud.width = mLastRGB.cols;
+		_cloud.height = mLastRGB.rows;
+		return true;
+	}
 
 }	//	namespace mico 
 
-#include <mico/camera_wrapper/StereoCameras/StereoCameraRos.inl>
+#include <mico/cameras_wrapper/StereoCameras/StereoCameraRosBag.inl>
 
-#endif  // RGBDSLAM_VISION_STEREOCAMERAS_STEREOCAMERAROS_H_
+#endif  // RGBDSLAM_VISION_STEREOCAMERAS_StereoCameraRosBag_H_

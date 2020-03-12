@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
-//  mico
+//  Cameras wrapper MICO plugin
 //---------------------------------------------------------------------------------------------------------------------
-//  Copyright 2018 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
+//  Copyright 2020 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
 //---------------------------------------------------------------------------------------------------------------------
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -21,37 +21,33 @@
 
 
 
-#ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMDATASET_H_
-#define MICO_FLOW_BLOCKS_STREAMERS_STREAMDATASET_H_
+#ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_H_
+#define MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_H_
 
 #include <flow/Block.h>
-#include <mico/camera_wrapper/StereoCameras/StereoCameraVirtual.h>
+
+#include <mico/cameras_wrapper/StereoCameras/StereoCameraRealSense.h>
 
 namespace mico{
 
-    class StreamDataset:public flow::Block{
+    class StreamRealSense:public flow::Block{
     public:
-        virtual std::string name() const override {return "Dataset Streamer";}
+        virtual std::string name() const override {return "RealSense Streamer";}
         
-        StreamDataset();
-        // ~StreamDataset(){};
+        StreamRealSense();
+        ~StreamRealSense(){};
         
         virtual bool configure(std::unordered_map<std::string, std::string> _params) override;
         std::vector<std::string> parameters() override;
-
-        std::string description() const override {return    "Streamer block that reads data from a dataset (in split files format) and streams it syncronously."
-                                                            "It assumes that all the files are sequentially indexed.\n"
+    
+        std::string description() const override {return    "Streamer block that reads from an Intel realsense device and streams its flows of images.\n"
                                                             "   - Outputs: \n";};
-        
-
-        virtual QWidget * customWidget() override;
-
     protected:
         virtual void loopCallback() override;
 
     private:
-        StereoCameraVirtual camera_;
-        float targetRate_ = 30; // FPS
+        StereoCameraRealSense camera_;
+        bool hasInitCamera_ = false;
     };
 
 }

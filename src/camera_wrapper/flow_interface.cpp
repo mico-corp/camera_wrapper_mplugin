@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------------------------------------------------
-//  mico
+//  Cameras wrapper MICO plugin
 //---------------------------------------------------------------------------------------------------------------------
-//  Copyright 2018 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
+//  Copyright 2020 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
 //---------------------------------------------------------------------------------------------------------------------
 //  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 //  and associated documentation files (the "Software"), to deal in the Software without restriction,
@@ -21,10 +21,10 @@
 
 
 #include <flow/flow.h>
-#include <mico/camera_wrapper/flow/StreamDataset.h>
-#include <mico/camera_wrapper/flow/StreamKinect.h>
-#include <mico/camera_wrapper/flow/StreamRealSense.h>
-#include <mico/camera_wrapper/flow/StreamWebcam.h>
+#include <mico/cameras_wrapper/flow/StreamDataset.h>
+#include <mico/cameras_wrapper/flow/StreamKinect.h>
+#include <mico/cameras_wrapper/flow/StreamRealSense.h>
+#include <mico/cameras_wrapper/flow/StreamWebcam.h>
 
 using namespace mico;
 using namespace flow;
@@ -32,10 +32,10 @@ using namespace flow;
 extern "C" flow::PluginNodeCreator* factory(){
     flow::PluginNodeCreator *creator = new flow::PluginNodeCreator;
 
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamDataset, true    >>(); }, "camera_wrapper");
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSense, true  >>(); }, "camera_wrapper");
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamKinect, true     >>(); }, "camera_wrapper");
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamWebcam, true     >>(); }, "camera_wrapper");
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamDataset, true    >>(); }, "cameras_wrapper");
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSense, true  >>(); }, "cameras_wrapper");
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamKinect, true     >>(); }, "cameras_wrapper");
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamWebcam, true     >>(); }, "cameras_wrapper");
 
     return creator;
 }
