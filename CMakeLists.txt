@@ -20,7 +20,7 @@
 ##---------------------------------------------------------------------------------------------------------------------
 cmake_minimum_required (VERSION 3.12 FATAL_ERROR)
 project(mico VERSION 1.0 LANGUAGES C CXX)
-set(PLUGIN_NAME ${PROJECT_NAME}-cameras_wrapper)
+set(PLUGIN_NAME ${PROJECT_NAME}-cameras-wrapper)
 
 ##################################################
 ###### Create project and configure ALIAS ########
@@ -232,3 +232,16 @@ add_custom_target(flow_install
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/lib${PLUGIN_NAME}.so 
                                      $ENV{HOME}/.flow/plugins/lib${PLUGIN_NAME}.so
 )
+
+##################################################
+####  CPACK deb generation configuration    ######
+##################################################
+if(${PREPARE_PACKAGE_PPA})
+  set(UPLOAD_PPA "ppa:bardo91/mico")
+  set(CPACK_GENERATOR "DEB")
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Pablo Ramon Soria <pabramsor@gmail.com>") #required
+  set(CPACK_DEBIAN_PACKAGE_NAME ${PLUGIN_NAME})
+  
+  include(CPack)
+  include(cmake/templates/prepare_package_ppa.cmake)
+endif()
