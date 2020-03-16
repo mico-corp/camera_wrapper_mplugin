@@ -28,11 +28,13 @@
 #include <Eigen/Eigen>
 #include <string>
 #include <iostream>
+#include <thread>
+#include <mutex>
 
 #include <librealsense2/rs.hpp>
 
 namespace mico{
-
+    
     class TrackingCamera {
     public:
         /// \param _filePath: path to the file.
@@ -44,8 +46,11 @@ namespace mico{
         /// \brief get the mono fisheye frame.
 		bool fisheye(cv::Mat &_fisheye);
         
-        /// \brief get the mono fisheye frame.
+        /// \brief get the t265 pose.
 		bool pose(Eigen::Matrix4f &_pose);
+
+        /// \brief reset the camera pose.
+        bool reset();
 
     private:
         int deviceId_;
@@ -55,16 +60,18 @@ namespace mico{
         rs2::device rsDevice_;
         rs2::pipeline rsPipeline_;
         rs2::pipeline_profile rsPipelineProfile_;
+        rs2::config rsConfig_;
 
         rs2_intrinsics fisheyeIntrinsics_;
-
-        // rs2::pose_sensor poseSensor_;
 
         cv::Mat lastLeftFisheye_;
         Eigen::Matrix4f lastPose_;
         bool hasFisheye_ , hasPose_;
+
         int leftId_  = 1;
         int rightId_ = 2;
+
+        std::mutex pipelineLock_;
     };
 }
 

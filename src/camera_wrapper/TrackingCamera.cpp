@@ -42,25 +42,25 @@ namespace mico {
         // std::cout << "[REALSENSE] Using device "<< deviceId_ <<", an "<< rsDevice_.get_info(rs2_camera_info::RS2_CAMERA_INFO_NAME) << std::endl;
         // std::cout << "[REALSENSE] Serial number: " << rsDevice_.get_info(rs2_camera_info::RS2_CAMERA_INFO_SERIAL_NUMBER) << std::endl;
         // std::cout << "[REALSENSE] Firmware version: " << rsDevice_.get_info(rs2_camera_info::RS2_CAMERA_INFO_FIRMWARE_VERSION)<< std::endl;
-		// std::string serialNumber = rsDevice_.get_info(rs2_camera_info::RS2_CAMERA_INFO_SERIAL_NUMBER);
 
-        rs2::config cfg;
-        cfg.enable_stream(RS2_STREAM_POSE, RS2_FORMAT_6DOF);
-        cfg.enable_stream(RS2_STREAM_FISHEYE, leftId_ , RS2_FORMAT_Y8);
-        cfg.enable_stream(RS2_STREAM_FISHEYE, rightId_, RS2_FORMAT_Y8);
+        rsConfig_.enable_stream(RS2_STREAM_POSE, RS2_FORMAT_6DOF);
+        rsConfig_.enable_stream(RS2_STREAM_FISHEYE, leftId_ , RS2_FORMAT_Y8);
+        rsConfig_.enable_stream(RS2_STREAM_FISHEYE, rightId_, RS2_FORMAT_Y8);
+        pipelineLock_.lock();
         rsPipeline_ = rs2::pipeline();
-        rsPipelineProfile_ = rsPipeline_.start(cfg);
+        rsPipelineProfile_ = rsPipeline_.start(rsConfig_);
+        pipelineLock_.unlock();
 
-        auto poseStream = rsPipelineProfile_.get_stream(RS2_STREAM_POSE).as<rs2::pose_stream_profile>();
         auto fisheyeStream = rsPipelineProfile_.get_stream(RS2_STREAM_FISHEYE).as<rs2::video_stream_profile>();
-        
         fisheyeIntrinsics_ = fisheyeStream.get_intrinsics();        
 
         return true;            
     }
 
     bool TrackingCamera::grab(){
+        pipelineLock_.lock();
         rs2::frameset frames = rsPipeline_.wait_for_frames();
+        pipelineLock_.unlock();
 
         rs2::frame framePose = frames.first(RS2_STREAM_POSE);
         auto poseData = framePose.as<rs2::pose_frame>().get_pose_data();
@@ -89,5 +89,15 @@ namespace mico {
         return hasPose_;
     }
 
+    bool TrackingCamera::reset(){
+        pipelineLock_.lock();
+
+        rsPipeline_.stop();
+        std::this_thread::sleep_for( std::chrono::seconds(1) );
+        rsPipeline_.start(rsConfig_);
+        
+        pipelineLock_.unlock();
+        return true;
+    }
     
 }

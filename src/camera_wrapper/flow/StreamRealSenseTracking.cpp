@@ -23,58 +23,76 @@
 
 namespace mico{
 
-        StreamRealSenseTracking::StreamRealSenseTracking(){
-            createPipe("Fisheye", "image");
-            createPipe("Pose", "mat44");
-        }
+    StreamRealSenseTracking::StreamRealSenseTracking(){
+        createPipe("Fisheye", "image");
+        createPipe("Pose", "mat44");
+    }
 
-        bool StreamRealSenseTracking::configure(std::unordered_map<std::string, std::string> _params) {
-            if(isRunningLoop() || hasInitCamera_) // Cant configure if already running.
-                return true;
+    bool StreamRealSenseTracking::configure(std::unordered_map<std::string, std::string> _params) {
+        if(isRunningLoop() || hasInitCamera_) // Cant configure if already running.
+            return true;
 
-            cjson::Json jParams = {};
-            for(auto &p:_params){
-                if(p.first == "devide_id"){
-                    jParams["deviceId"] = atoi(p.second.c_str());
-                }
+        cjson::Json jParams = {};
+        for(auto &p:_params){
+            if(p.first == "devide_id"){
+                jParams["deviceId"] = atoi(p.second.c_str());
             }
-
-            hasInitCamera_ = camera_.init(jParams);
-            
-            return hasInitCamera_;
         }
+
+        hasInitCamera_ = camera_.init(jParams);
         
-        std::vector<std::string> StreamRealSenseTracking::parameters(){
-            return {
-                "devide_id" 
-            };
+        return hasInitCamera_;
+    }
+    
+    std::vector<std::string> StreamRealSenseTracking::parameters(){
+        return {
+            "devide_id" 
+        };
+    }
+
+    void StreamRealSenseTracking::loopCallback() {
+        if(!hasInitCamera_){
+            std::cout << "Cant init Realsense camera if not configured first" << std::endl;
+            return;
+        }
+            
+        for(unsigned i = 0; i < 10; i++){
+            camera_.grab(); // 666 Grab some images to remove trash initial ones
         }
 
-        void StreamRealSenseTracking::loopCallback() {
-            if(!hasInitCamera_){
-                std::cout << "Cant init Realsense camera if not configured first" << std::endl;
-                return;
-            }
-                
-            for(unsigned i = 0; i < 10; i++){
-                camera_.grab(); // 666 Grab some images to remove trash initial ones
-            }
+        while(isRunningLoop()){
+            cv::Mat fisheye;
+            Eigen::Matrix4f pose;
+            
+            camera_.grab();
 
-            while(isRunningLoop()){
-                cv::Mat fisheye;
-                Eigen::Matrix4f pose;
-               
-                camera_.grab();
+            if(getPipe("Fisheye")->registrations() !=0 ){
+                camera_.fisheye(fisheye);
+                cv::cvtColor(fisheye, fisheye, cv::COLOR_GRAY2RGB);
+                getPipe("Fisheye")->flush(fisheye);     
+            }
+            if(getPipe("Pose")->registrations() !=0 ){
+                camera_.pose(pose);
+                getPipe("Pose")->flush(pose);
+            }
+        }      
+    }
 
-                if(getPipe("Fisheye")->registrations() !=0 ){
-                    camera_.fisheye(fisheye);
-                    cv::cvtColor(fisheye, fisheye, cv::COLOR_GRAY2RGB);
-                    getPipe("Fisheye")->flush(fisheye);     
-                }
-                if(getPipe("Pose")->registrations() !=0 ){
-                    camera_.pose(pose);
-                    getPipe("Pose")->flush(pose);
-                }
-            }      
-        }
+    QWidget * StreamRealSenseTracking::customWidget() {
+        QGroupBox * box = new QGroupBox;
+        
+        QHBoxLayout * layout = new QHBoxLayout;
+        QPushButton *button = new QPushButton("Reset Pose");
+        layout->addWidget(button);
+        
+        box->setLayout(layout);
+
+        QWidget::connect(button, &QPushButton::clicked, [this](){
+            if (camera_.reset())
+                std::cout << "Tracking camera reset sucesfully \n";
+            
+        });
+
+        return box;
+    }
 }

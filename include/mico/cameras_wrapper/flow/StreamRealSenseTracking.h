@@ -22,10 +22,13 @@
 #ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_TRACKING_H_
 #define MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_TRACKING_H_
 
+#include <mico/cameras_wrapper/TrackingCamera.h>
+
 #include <flow/Block.h>
 #include <flow/Outpipe.h>
 
-#include <mico/cameras_wrapper/TrackingCamera.h>
+#include <QGroupBox>
+#include <QPushButton>
 
 namespace mico{
 
@@ -39,8 +42,10 @@ namespace mico{
         virtual bool configure(std::unordered_map<std::string, std::string> _params) override;
         std::vector<std::string> parameters() override;
     
-        std::string description() const override {return    "Streamer block that reads from an Intel realsense device and streams its flows of images.\n"
+        std::string description() const override {return    "Streamer block that reads from an Intel realsense device and streams its flows of images and poses.\n"
                                                             "   - Outputs: \n";};
+
+        virtual QWidget * customWidget() override;
     protected:
         virtual void loopCallback() override;
 
