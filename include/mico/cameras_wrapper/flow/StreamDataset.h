@@ -52,6 +52,8 @@ namespace mico{
     private:
         StereoCameraVirtual camera_;
         float targetRate_ = 30; // FPS
+        std::ifstream* groundtruth_;
+
     };
 
 }
