@@ -30,8 +30,12 @@ namespace mico {
             deviceId_ = configFile_["deviceId"];
         }
         
-        // 666 !!
+        // 666 
+        // https://github.com/IntelRealSense/librealsense/issues/3434
+        // 
+        // rsContext_ = rs2::context();
         // auto list = rsContext_.query_devices();
+        // std::this_thread::sleep_for( std::chrono::seconds(1) );
         // rsContext_.unload_tracking_module();
 		// if (list.size() == 0) {
 		// 	std::cout << "[REALSENSE] There's no any compatible device connected." << std::endl;
