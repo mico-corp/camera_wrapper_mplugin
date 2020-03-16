@@ -19,23 +19,38 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------------------------------------------------
 
+#ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_TRACKING_H_
+#define MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_TRACKING_H_
 
-#include <flow/flow.h>
-#include <mico/cameras_wrapper/flow/StreamDataset.h>
-#include <mico/cameras_wrapper/flow/StreamKinect.h>
-#include <mico/cameras_wrapper/flow/StreamRealSense.h>
-#include <mico/cameras_wrapper/flow/StreamWebcam.h>
+#include <flow/Block.h>
+#include <flow/Outpipe.h>
 
-using namespace mico;
-using namespace flow;
+#include <mico/cameras_wrapper/TrackingCamera.h>
 
-extern "C" flow::PluginNodeCreator* factory(){
-    flow::PluginNodeCreator *creator = new flow::PluginNodeCreator;
+namespace mico{
 
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamDataset, true    >>(); }, "cameras_wrapper");
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSense, true  >>(); }, "cameras_wrapper");
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamKinect, true     >>(); }, "cameras_wrapper");
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamWebcam, true     >>(); }, "cameras_wrapper");
+    class StreamRealSenseTracking : public flow::Block{
+    public:
+        virtual std::string name() const override {return "RealSense T265 Streamer";}
+        
+        StreamRealSenseTracking();
+        ~StreamRealSenseTracking(){};
+        
+        virtual bool configure(std::unordered_map<std::string, std::string> _params) override;
+        std::vector<std::string> parameters() override;
+    
+        std::string description() const override {return    "Streamer block that reads from an Intel realsense device and streams its flows of images.\n"
+                                                            "   - Outputs: \n";};
+    protected:
+        virtual void loopCallback() override;
 
-    return creator;
+    private:
+        TrackingCamera camera_;
+        bool hasInitCamera_ = false;
+    };
+
 }
+
+
+
+#endif

@@ -127,6 +127,8 @@ else()
 	MESSAGE( FATAL_ERROR "Couldnt Add PCL and/or it's dependencies")
 endif()
 
+find_package(Eigen3 REQUIRED)
+
 #########################################
 ## Load Artec SDK 
 if(WIN32) # Look for a better way of doing this.
