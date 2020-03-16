@@ -33,6 +33,7 @@ namespace mico{
             createPipe("Color", "image");
             createPipe("Depth", "image");
             createPipe("Cloud", "cloud");
+            createPipe("Pose", "mat44");
         }
 
         bool StreamDataset::configure(std::unordered_map<std::string, std::string> _params) {
@@ -57,6 +58,8 @@ namespace mico{
                     jParams["loop_dataset"] = atoi(p.second.c_str());
                 }else if(p.first == "calibration"){
                     jParams["calibFile"] = p.second;
+                }else if(p.first == "groundtruth"){
+                    groundtruth_ = new std::ifstream (p.second);
                 }
 
             }
@@ -67,7 +70,7 @@ namespace mico{
         
         std::vector<std::string> StreamDataset::parameters(){
             return {
-                "color", "depth", "calibration"
+                "color", "depth", "calibration", "groundtruth"
             };
         }
 
@@ -113,7 +116,21 @@ namespace mico{
                         if(camera_.cloud(colorNormalCloud))
                             pipe->flush(colorNormalCloud.makeShared());
                     }
-
+                    if(auto pipe = getPipe("Pose"); pipe->registrations() !=0 ){
+                        Eigen::Matrix4f pose = Eigen::Matrix4f::Identity();
+                        std::string line;
+                        std::getline(*groundtruth_, line);
+                        std::istringstream iss(line);
+                        float timestamp, tx, ty, tz, qx, qy, qz ,qw;
+                        if (!(iss >> timestamp >> tx >> ty >> tz >> qx >> qy >> qz >> qw)) 
+                            break;
+                        Eigen::Quaternionf quat(qw,qx,qy,qz);
+                        pose.block(0,0,3,3) = quat.toRotationMatrix();
+                        pose(0,3) = tx;
+                        pose(1,3) = ty;
+                        pose(2,3) = tz;
+                        pipe->flush(pose);
+                    }
                 }
             }         
         }
