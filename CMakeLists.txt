@@ -65,6 +65,12 @@ if(${flow_FOUND})
   target_compile_definitions(${PLUGIN_NAME} PUBLIC HAS_FLOW)
 endif()
 
+set(MICO_DEPS "core")
+foreach(DEP ${MICO_DEPS})
+  find_package(mico-${DEP} REQUIRED HINTS "/usr/local/lib/cmake/mico")
+  target_link_libraries(${PLUGIN_NAME} LINK_PRIVATE mico::mico-${DEP})
+endforeach()
+
 find_package(realsense2 HINTS "/usr/local/lib/cmake/realsense2")
 if(${realsense2_FOUND})
 	MESSAGE(STATUS "Found librealsense v2, compiling RealSense devices wrapper")

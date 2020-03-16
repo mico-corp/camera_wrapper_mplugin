@@ -21,9 +21,11 @@ install_git_repo () {
 	fi
 }
 
-install_git_repo "nodeeditor"   "https://github.com/mico-corp/nodeeditor.git"
-install_git_repo "flow"         "https://github.com/mico-corp/flow.git"
-install_git_repo "core_mplugin" "https://github.com/mico-corp/core_mplugin.git"
-
 bash install_librealsense2.sh
+
+mkdir ~/.mico/ -p
+cd ~/.mico/
+mkdir thirdparty_plugins/cameras -p
+cd thirdparty_plugins/cameras
+
 install_git_repo "libfreenect"  "https://github.com/OpenKinect/libfreenect.git"
