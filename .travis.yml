@@ -24,6 +24,7 @@ matrix:
             - libopencv-dev
             - libpcl-dev
             - libglu1-mesa-dev 
+            - freeglut3-dev 
 
 
 before_install:
@@ -37,6 +38,7 @@ before_install:
 
   - eval "${MATRIX_EVAL}" 
 
+  - bash ./scripts/install_librealsense2.sh
   - bash ./scripts/install_dependencies_ci.sh
 
 script:

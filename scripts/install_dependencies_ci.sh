@@ -25,5 +25,4 @@ install_git_repo "nodeeditor"   "https://github.com/mico-corp/nodeeditor.git"
 install_git_repo "flow"         "https://github.com/mico-corp/flow.git"
 install_git_repo "core_mplugin" "https://github.com/mico-corp/core_mplugin.git"
 
-bash ./install_librealsense2.sh
 install_git_repo "libfreenect"  "https://github.com/OpenKinect/libfreenect.git"
