@@ -1,5 +1,5 @@
 ##---------------------------------------------------------------------------------------------------------------------
-##  MICO Camera Wrapper plugin
+##  MICO Cameras wrapper plugin
 ##---------------------------------------------------------------------------------------------------------------------
 ##  Copyright 2020 Pablo Ramon Soria (a.k.a. Bardo91) pabramsor@gmail.com
 ##---------------------------------------------------------------------------------------------------------------------
@@ -20,16 +20,16 @@
 ##---------------------------------------------------------------------------------------------------------------------
 cmake_minimum_required (VERSION 3.12 FATAL_ERROR)
 project(mico VERSION 1.0 LANGUAGES C CXX)
-set(PLUGIN_NAME ${PROJECT_NAME}-cameras-wrapper)
+set(PLUGIN_NAME ${PROJECT_NAME}-cameras)
 
 ##################################################
 ###### Create project and configure ALIAS ########
 ##################################################
 
-file(GLOB_RECURSE MICO_CAMERAS_WRAPPER_SOURCE_FILES "src/*.cpp" "src/*.c")
-file(GLOB_RECURSE MICO_CAMERAS_WRAPPER_HEADER_FILES "include/*.h" "include/*.inl")
+file(GLOB_RECURSE MICO_CAMERAS_SOURCE_FILES "src/*.cpp" "src/*.c")
+file(GLOB_RECURSE MICO_CAMERAS_HEADER_FILES "include/*.h" "include/*.inl")
  
-add_library(${PLUGIN_NAME} SHARED ${MICO_CAMERAS_WRAPPER_HEADER_FILES} ${MICO_CAMERAS_WRAPPER_SOURCE_FILES})
+add_library(${PLUGIN_NAME} SHARED ${MICO_CAMERAS_HEADER_FILES} ${MICO_CAMERAS_SOURCE_FILES})
 target_compile_features(${PLUGIN_NAME} PUBLIC cxx_std_17)
 target_include_directories(${PLUGIN_NAME}
   PUBLIC
