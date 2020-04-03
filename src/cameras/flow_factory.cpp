@@ -33,11 +33,11 @@ using namespace flow;
 extern "C" flow::PluginNodeCreator* factory(){
     flow::PluginNodeCreator *creator = new flow::PluginNodeCreator;
 
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamDataset, true           >>(); }, "cameras_wrapper");
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSense, true         >>(); }, "cameras_wrapper");
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSenseTracking, true >>(); }, "cameras_wrapper");
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamKinect, true            >>(); }, "cameras_wrapper");
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamWebcam, true            >>(); }, "cameras_wrapper");
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamDataset, true           >>(); }, "cameras");
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSense, true         >>(); }, "cameras");
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSenseTracking, true >>(); }, "cameras");
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamKinect, true            >>(); }, "cameras");
+    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamWebcam, true            >>(); }, "cameras");
 
     return creator;
 }
