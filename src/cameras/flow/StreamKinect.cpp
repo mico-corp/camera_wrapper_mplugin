@@ -19,6 +19,7 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------------------------------------------------
 
+#ifndef BUILD_ONLY_CAMERAS
 
 #include <mico/cameras/flow/StreamKinect.h>
 #include <flow/Outpipe.h>
@@ -82,3 +83,5 @@ namespace mico{
             }      
         }
 }
+
+#endif

@@ -22,6 +22,8 @@ cmake_minimum_required (VERSION 3.12 FATAL_ERROR)
 project(mico VERSION 1.0 LANGUAGES C CXX)
 set(PLUGIN_NAME ${PROJECT_NAME}-cameras)
 
+option(BUILD_ONLY_CAMERAS "Build cameras without use flow blocks" ON)
+
 ##################################################
 ###### Create project and configure ALIAS ########
 ##################################################
@@ -59,26 +61,30 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/" ${CMAKE_MODUL
 
 target_compile_options(${PLUGIN_NAME} PUBLIC "-Wall")
 
-if(NOT ${BUNDLE_COMPILATION})
-  find_package(flow REQUIRED)
-  if(${flow_FOUND})
-    target_link_libraries(${PLUGIN_NAME}  LINK_PUBLIC flow::flow)
-    target_compile_definitions(${PLUGIN_NAME} PUBLIC HAS_FLOW)
-  endif()
+if(${BUILD_ONLY_CAMERAS})
+	message(STATUS "Using only cameras, without use flow blocks")
+	target_compile_definitions(${PLUGIN_NAME} PUBLIC BUILD_ONLY_CAMERAS)
 else()
-  set(flow_FOUND TRUE)
-  target_link_libraries(${PLUGIN_NAME}  LINK_PUBLIC flow)
-  target_compile_definitions(${PLUGIN_NAME} PUBLIC HAS_FLOW)
+	if(NOT ${BUNDLE_COMPILATION})
+	find_package(flow REQUIRED)
+	if(${flow_FOUND})
+		target_link_libraries(${PLUGIN_NAME}  LINK_PUBLIC flow::flow)
+		target_compile_definitions(${PLUGIN_NAME} PUBLIC HAS_FLOW)
+	endif()
+	else()
+	set(flow_FOUND TRUE)
+	target_link_libraries(${PLUGIN_NAME}  LINK_PUBLIC flow)
+	target_compile_definitions(${PLUGIN_NAME} PUBLIC HAS_FLOW)
+	endif()
+
+	set(MICO_DEPS "core")
+	foreach(DEP ${MICO_DEPS})
+	if(NOT ${BUNDLE_COMPILATION})
+		find_package(mico-${DEP} REQUIRED HINTS "/usr/local/lib/cmake/mico")
+	endif()
+	target_link_libraries(${PLUGIN_NAME} LINK_PRIVATE mico::mico-${DEP})
+	endforeach()
 endif()
-
-
-set(MICO_DEPS "core")
-foreach(DEP ${MICO_DEPS})
-  if(NOT ${BUNDLE_COMPILATION})
-    find_package(mico-${DEP} REQUIRED HINTS "/usr/local/lib/cmake/mico")
-  endif()
-  target_link_libraries(${PLUGIN_NAME} LINK_PRIVATE mico::mico-${DEP})
-endforeach()
 
 # find_package(realsense2 HINTS "/usr/local/lib/cmake/realsense2")
 find_package(realsense2)

@@ -20,6 +20,8 @@
 //---------------------------------------------------------------------------------------------------------------------
 
 
+#ifndef BUILD_ONLY_CAMERAS
+
 #include <flow/flow.h>
 #include <mico/cameras/flow/StreamDataset.h>
 #include <mico/cameras/flow/StreamKinect.h>
@@ -41,3 +43,5 @@ extern "C" flow::PluginNodeCreator* factory(){
 
     return creator;
 }
+
+#endif

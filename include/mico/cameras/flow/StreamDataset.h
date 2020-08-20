@@ -19,7 +19,7 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------------------------------------------------
 
-
+#ifndef BUILD_ONLY_CAMERAS
 
 #ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMDATASET_H_
 #define MICO_FLOW_BLOCKS_STREAMERS_STREAMDATASET_H_
@@ -58,6 +58,6 @@ namespace mico{
 
 }
 
-
+#endif
 
 #endif

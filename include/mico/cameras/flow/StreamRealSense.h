@@ -19,13 +19,12 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------------------------------------------------
 
-
+#ifndef BUILD_ONLY_CAMERAS
 
 #ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_H_
 #define MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_H_
 
 #include <flow/Block.h>
-
 #include <mico/cameras/StereoCameras/StereoCameraRealSense.h>
 
 namespace mico{
@@ -52,6 +51,6 @@ namespace mico{
 
 }
 
-
+#endif
 
 #endif
