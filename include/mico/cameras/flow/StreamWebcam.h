@@ -31,7 +31,12 @@ namespace mico{
 
     class StreamWebcam:public flow::Block{
     public:
-        virtual std::string name() const override {return "Streamer Webcam";}
+        virtual std::string name() const override {return "Streamer Webcam";}     
+        virtual QIcon icon() const override { 
+            std::string userDir(getenv("USER"));
+            std::string resourcesDir = "/home/"+userDir+"/.flow/plugins/resources/cameras/";
+            return QIcon((resourcesDir+"webcam_icon.svg").c_str());
+        }
         
         StreamWebcam();
         ~StreamWebcam();

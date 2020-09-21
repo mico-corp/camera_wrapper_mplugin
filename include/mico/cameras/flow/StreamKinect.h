@@ -32,7 +32,12 @@ namespace mico{
 
     class StreamKinect:public flow::Block{
     public:
-        virtual std::string name() const override {return "Kinect Streamer";}
+        virtual std::string name() const override {return "Kinect Streamer";}       
+        virtual QIcon icon() const override { 
+            std::string userDir(getenv("USER"));
+            std::string resourcesDir = "/home/"+userDir+"/.flow/plugins/resources/cameras/";
+            return QIcon((resourcesDir+"kinect_icon.svg").c_str());
+        }
         
         StreamKinect();
         // ~StreamKinect(){};

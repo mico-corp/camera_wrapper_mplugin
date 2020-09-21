@@ -250,7 +250,13 @@ add_custom_target(flow_install_${PLUGIN_NAME} ALL
                 COMMAND ${CMAKE_COMMAND} -E copy 	${CMAKE_CURRENT_BINARY_DIR}/lib${PLUGIN_NAME}.so 
                 ${CMAKE_BINARY_DIR}/plugins/lib${PLUGIN_NAME}.so
 )
+add_custom_target(flow_install_${PLUGIN_NAME}_resources ALL
+                COMMAND ${CMAKE_COMMAND} -E copy_directory 	${CMAKE_CURRENT_SOURCE_DIR}/resources 
+                ${CMAKE_BINARY_DIR}/plugins/resources/cameras
+)
+
 add_dependencies(flow_install_${PLUGIN_NAME} ${PLUGIN_NAME})
+add_dependencies(flow_install_${PLUGIN_NAME}_resources ${PLUGIN_NAME})
 
 ##################################################
 ####  CPACK deb generation configuration    ######

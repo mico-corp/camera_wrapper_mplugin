@@ -32,7 +32,12 @@ namespace mico{
 
     class StreamRealSense:public flow::Block{
     public:
-        virtual std::string name() const override {return "RealSense Streamer";}
+        virtual std::string name() const override {return "RealSense Streamer";}     
+        virtual QIcon icon() const override { 
+            std::string userDir(getenv("USER"));
+            std::string resourcesDir = "/home/"+userDir+"/.flow/plugins/resources/cameras/";
+            return QIcon((resourcesDir+"realsense_icon.png").c_str());
+        }
         
         StreamRealSense();
         ~StreamRealSense(){};
