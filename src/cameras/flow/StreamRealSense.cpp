@@ -51,9 +51,9 @@ namespace mico{
             return hasInitCamera_;
         }
         
-        std::vector<std::string> StreamRealSense::parameters(){
+        std::vector<std::pair<std::string, flow::Block::eParameterType>> StreamRealSense::parameters(){
             return {
-                "devide_id" 
+                {"devide_id", flow::Block::eParameterType::INTEGER} 
             };
         }
 

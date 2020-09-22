@@ -44,9 +44,9 @@ namespace mico{
         return hasInitCamera_;
     }
     
-    std::vector<std::string> StreamRealSenseTracking::parameters(){
+    std::vector<std::pair<std::string, flow::Block::eParameterType>> StreamRealSenseTracking::parameters(){
         return {
-            "devide_id" 
+            {"devide_id", flow::Block::eParameterType::INTEGER} 
         };
     }
 

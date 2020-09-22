@@ -47,9 +47,9 @@ namespace mico{
             return hasInitCamera_;
         }
         
-        std::vector<std::string> StreamKinect::parameters(){
+        std::vector<std::pair<std::string, flow::Block::eParameterType>> StreamKinect::parameters(){
             return {
-                "calibFile" 
+                {"calibFile", flow::Block::eParameterType::STRING}
             };
         }
 

@@ -52,9 +52,9 @@ namespace mico{
 
         }
         
-        std::vector<std::string> StreamWebcam::parameters(){
+        std::vector<std::pair<std::string, flow::Block::eParameterType>> StreamWebcam::parameters(){
             return {
-                "device_id" 
+                {"device_id", flow::Block::eParameterType::INTEGER}
             };
         }
 

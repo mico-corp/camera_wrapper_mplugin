@@ -68,9 +68,9 @@ namespace mico{
 
         }
         
-        std::vector<std::string> StreamDataset::parameters(){
+        std::vector<std::pair<std::string, flow::Block::eParameterType>> StreamDataset::parameters(){
             return {
-                "color", "depth", "calibration", "groundtruth"
+                {"color", flow::Block::eParameterType::STRING}, {"depth", flow::Block::eParameterType::STRING}, {"calibration", flow::Block::eParameterType::STRING}, {"groundtruth", flow::Block::eParameterType::STRING}
             };
         }
 
