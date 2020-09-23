@@ -19,7 +19,7 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------------------------------------------------
 
-
+#ifdef ENABLE_LIBREALSENSE_V2
 
 #ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_H_
 #define MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_H_
@@ -58,5 +58,7 @@ namespace mico{
 }
 
 
+
+#endif
 
 #endif

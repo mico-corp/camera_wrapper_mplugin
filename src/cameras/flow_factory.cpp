@@ -34,8 +34,10 @@ extern "C" flow::PluginNodeCreator* factory(){
     flow::PluginNodeCreator *creator = new flow::PluginNodeCreator;
 
     creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamDataset, true           >>(); }, "cameras");
+    #ifdef ENABLE_LIBREALSENSE_V2
     creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSense, true         >>(); }, "cameras");
     creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSenseTracking, true >>(); }, "cameras");
+    #endif
     creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamKinect, true            >>(); }, "cameras");
     creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamWebcam, true            >>(); }, "cameras");
 

@@ -19,8 +19,9 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------------------------------------------------
 
-#include <mico/cameras/TrackingCamera.h>
+#ifdef ENABLE_LIBREALSENSE_V2
 
+#include <mico/cameras/TrackingCamera.h>
 namespace mico {
 
 	bool TrackingCamera::init(const cjson::Json & _json){
@@ -105,3 +106,5 @@ namespace mico {
     }
     
 }
+
+#endif

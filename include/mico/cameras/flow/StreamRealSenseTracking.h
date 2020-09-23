@@ -22,6 +22,8 @@
 #ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_TRACKING_H_
 #define MICO_FLOW_BLOCKS_STREAMERS_STREAMREALSENSE_TRACKING_H_
 
+#ifdef ENABLE_LIBREALSENSE_V2
+
 #include <mico/cameras/TrackingCamera.h>
 
 #include <flow/Block.h>
@@ -61,6 +63,6 @@ namespace mico{
 
 }
 
-
+#endif
 
 #endif

@@ -22,6 +22,8 @@
 #ifndef MICO_BASE_VISION_TRACKING_CAMERA_H_
 #define MICO_BASE_VISION_TRACKING_CAMERA_H_
 
+#ifdef ENABLE_LIBREALSENSE_V2
+
 #include <mico/cameras/cjson/json.h>
 
 #include <opencv2/opencv.hpp>
@@ -74,5 +76,7 @@ namespace mico{
         std::mutex pipelineLock_;
     };
 }
+
+#endif
 
 #endif

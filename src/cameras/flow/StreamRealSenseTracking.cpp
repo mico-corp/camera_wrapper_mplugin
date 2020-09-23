@@ -19,6 +19,8 @@
 //  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //---------------------------------------------------------------------------------------------------------------------
 
+#ifdef ENABLE_LIBREALSENSE_V2
+
 #include <mico/cameras/flow/StreamRealSenseTracking.h>
 
 namespace mico{
@@ -96,3 +98,5 @@ namespace mico{
         return box;
     }
 }
+
+#endif
