@@ -29,6 +29,7 @@ set(PLUGIN_NAME ${PROJECT_NAME}-cameras)
 file(GLOB_RECURSE MICO_CAMERAS_SOURCE_FILES "src/*.cpp" "src/*.c")
 file(GLOB_RECURSE MICO_CAMERAS_HEADER_FILES "include/*.h" "include/*.inl")
  
+list(APPEND MICO_MODULES cameras)
 add_library(${PLUGIN_NAME} SHARED ${MICO_CAMERAS_HEADER_FILES} ${MICO_CAMERAS_SOURCE_FILES})
 target_compile_features(${PLUGIN_NAME} PUBLIC cxx_std_17)
 target_include_directories(${PLUGIN_NAME}
