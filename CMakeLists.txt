@@ -38,8 +38,6 @@ target_include_directories(${PLUGIN_NAME}
     $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(${PLUGIN_NAME} PUBLIC pthread)
-
 add_library(${PROJECT_NAME}::${PLUGIN_NAME} ALIAS ${PLUGIN_NAME})
 
 
