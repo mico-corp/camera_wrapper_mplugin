@@ -20,41 +20,52 @@
 //---------------------------------------------------------------------------------------------------------------------
 
 
-
-#ifndef MICO_FLOW_BLOCKS_STREAMERS_STREAMWEBCAM_H_
-#define MICO_FLOW_BLOCKS_STREAMERS_STREAMWEBCAM_H_
-
-#include <flow/Block.h>
-#include <opencv2/opencv.hpp>
+#include <mico/cameras/flow/StreamWebcam.h>
+#include <flow/Outpipe.h>
 
 namespace mico{
+        StreamWebcam::StreamWebcam(){
+            createPipe("Color", "image");
+        }
 
-    class StreamWebcam:public flow::Block{
-    public:
-        virtual std::string name() const override {return "Streamer Webcam";}     
-        virtual QIcon icon() const override { 
-            return QIcon((flow::Persistency::resourceDir() + "cameras/webcam_icon.svg").c_str());
+
+        StreamWebcam::~StreamWebcam(){
+            if(camera_){
+                camera_->release();
+                delete camera_;
+            } 
+        };
+
+        bool StreamWebcam::configure(std::unordered_map<std::string, std::string> _params) {
+            if(isRunningLoop()) // Cant configure if already running.
+                return false;            
+
+            int deviceId = 0;
+            for(auto &p:_params){
+                if(p.first == "device_id")
+                    deviceId = atoi(p.second.c_str());
+            }
+            
+            camera_ = new cv::VideoCapture(deviceId);
+
+            return camera_->isOpened();
+
         }
         
-        StreamWebcam();
-        ~StreamWebcam();
-        
-        virtual bool configure(std::unordered_map<std::string, std::string> _params) override;
-        std::vector<std::pair<std::string, flow::Block::eParameterType>> parameters() override;
-        
-        std::string description() const override {return    "Streamer block that reads from usb ready cameras "
-                                                            "connected to the computer and streams its images.\n"
-                                                            "   - Outputs: \n";};
-                                                            
-    protected:
-        virtual void loopCallback() override;
+        std::vector<std::pair<std::string, flow::Block::eParameterType>> StreamWebcam::parameters(){
+            return {
+                {"device_id", flow::Block::eParameterType::INTEGER}
+            };
+        }
 
-    private:
-        cv::VideoCapture *camera_ = nullptr;
-    };
-
+        void StreamWebcam::loopCallback() {
+            while(isRunningLoop()){
+                if(auto pipe = getPipe("Color"); pipe->registrations() !=0 ){
+                    cv::Mat image;
+                    (*camera_) >> image;
+                    pipe->flush(image);     
+                }
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            }         
+        }
 }
-
-
-
-#endif

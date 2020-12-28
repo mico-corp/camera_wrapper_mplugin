@@ -21,24 +21,14 @@
 
 
 #include <flow/flow.h>
-#include <mico/cameras/flow/StreamDataset.h>
-#include <mico/cameras/flow/StreamKinect.h>
-#include <mico/cameras/flow/StreamRealSense.h>
-#include <mico/cameras/flow/StreamRealSenseTracking.h>
 #include <mico/cameras/flow/StreamWebcam.h>
 
 using namespace mico;
 using namespace flow;
 
-extern "C" flow::PluginNodeCreator* factory(){
-    flow::PluginNodeCreator *creator = new flow::PluginNodeCreator;
+extern "C" FLOW_FACTORY_EXPORT flow::PluginNodeCreator* factory(){
 
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamDataset, true           >>(); }, "cameras");
-    #ifdef ENABLE_LIBREALSENSE_V2
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSense, true         >>(); }, "cameras");
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamRealSenseTracking, true >>(); }, "cameras");
-    #endif
-    creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamKinect, true            >>(); }, "cameras");
+    flow::PluginNodeCreator *creator = new flow::PluginNodeCreator;
     creator->registerNodeCreator([](){ return std::make_unique<FlowVisualBlock<StreamWebcam, true            >>(); }, "cameras");
 
     return creator;
