@@ -46,7 +46,13 @@ namespace mico{
                     deviceId = atoi(p.second.c_str());
             }
             
-            camera_ = new cv::VideoCapture(deviceId);
+            camera_ = new cv::VideoCapture();
+
+            if (!camera_->open(deviceId, cv::CAP_DSHOW)) {
+                if (!camera_->open(deviceId, cv::CAP_GSTREAMER)) {
+                    return false;
+                }
+            }
 
             return camera_->isOpened();
 
