@@ -88,15 +88,15 @@ endif()
 
 
 
-find_package(pcl QUIET REQUIRED)
-if(${pcl_FOUND})
+find_package(PCL QUIET REQUIRED)
+if(${PCL_FOUND})
 	MESSAGE( STATUS "Adding properly PCL and its dependencies")
-	mplugin_include_directory(${PLUGIN_NAME} "${pcl_INCLUDE_DIRS}")
-	mplugin_link_library(${PLUGIN_NAME} "${pcl_LIBRARIES}")
+	mplugin_include_directory(${PLUGIN_NAME} "${PCL_INCLUDE_DIRS}")
+	mplugin_link_library(${PLUGIN_NAME} "${PCL_LIBRARIES}")
 	#target_link_libraries(${PLUGIN_NAME} LINK_PUBLIC ${PCL_LIBRARIES})
 	mplugin_compile_definition(${PLUGIN_NAME} "ENABLE_PCL" "DISABLE_PCAP" "DISABLE_PNG" "DISABLE_LIBUSB_1_0")
 
-	if(${pcl_VERSION} VERSION_GREATER 1.8)
+	if(${PCL_VERSION} VERSION_GREATER 1.8)
 		mplugin_compile_definition(${PLUGIN_NAME} "HAS_PCL_1_8")
 	else()
 		mplugin_compile_definition(${PLUGIN_NAME} "HAS_PCL_1_7")
