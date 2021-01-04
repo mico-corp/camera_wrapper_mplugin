@@ -30,7 +30,7 @@ namespace mico{
         createPipe("Pose", "mat44");
     }
 
-    bool StreamRealSenseTracking::configure(std::unordered_map<std::string, std::string> _params) {
+    bool StreamRealSenseTracking::configure(std::vector<flow::ConfigParameterDef> _params) {
         if(isRunningLoop() || hasInitCamera_) // Cant configure if already running.
             return true;
 
@@ -46,9 +46,9 @@ namespace mico{
         return hasInitCamera_;
     }
     
-    std::vector<std::pair<std::string, flow::Block::eParameterType>> StreamRealSenseTracking::parameters(){
+    std::vector<flow::ConfigParameterDef> StreamRealSenseTracking::parameters(){
         return {
-            {"devide_id", flow::Block::eParameterType::INTEGER} 
+            {"devide_id", flow::ConfigParameterDef::eParameterType::INTEGER} 
         };
     }
 

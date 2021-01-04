@@ -31,7 +31,7 @@ namespace mico{
             createPipe("Cloud", "cloud");
         }
 
-        bool StreamKinect::configure(std::unordered_map<std::string, std::string> _params) {
+        bool StreamKinect::configure(std::vector<flow::ConfigParameterDef> _params) {
             if(isRunningLoop() || hasInitCamera_) // Cant configure if already running.
                 return true;
 
@@ -47,9 +47,9 @@ namespace mico{
             return hasInitCamera_;
         }
         
-        std::vector<std::pair<std::string, flow::Block::eParameterType>> StreamKinect::parameters(){
+        std::vector<flow::ConfigParameterDef> StreamKinect::parameters(){
             return {
-                {"calibFile", flow::Block::eParameterType::STRING}
+                {"calibFile", flow::ConfigParameterDef::eParameterType::STRING}
             };
         }
 

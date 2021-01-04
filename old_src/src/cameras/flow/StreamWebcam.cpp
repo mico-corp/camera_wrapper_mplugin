@@ -36,7 +36,7 @@ namespace mico{
             } 
         };
 
-        bool StreamWebcam::configure(std::unordered_map<std::string, std::string> _params) {
+        bool StreamWebcam::configure(std::vector<flow::ConfigParameterDef> _params) {
             if(isRunningLoop()) // Cant configure if already running.
                 return false;            
 
@@ -52,9 +52,9 @@ namespace mico{
 
         }
         
-        std::vector<std::pair<std::string, flow::Block::eParameterType>> StreamWebcam::parameters(){
+        std::vector<flow::ConfigParameterDef> StreamWebcam::parameters(){
             return {
-                {"device_id", flow::Block::eParameterType::INTEGER}
+                {"device_id", flow::ConfigParameterDef::eParameterType::INTEGER}
             };
         }
 

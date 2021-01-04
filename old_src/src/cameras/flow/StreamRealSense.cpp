@@ -32,7 +32,7 @@ namespace mico{
             createPipe("Cloud", "cloud");
         }
 
-        bool StreamRealSense::configure(std::unordered_map<std::string, std::string> _params) {
+        bool StreamRealSense::configure(std::vector<flow::ConfigParameterDef> _params) {
             if(isRunningLoop() || hasInitCamera_) // Cant configure if already running.
                 return true;
 
@@ -52,9 +52,9 @@ namespace mico{
             return hasInitCamera_;
         }
         
-        std::vector<std::pair<std::string, flow::Block::eParameterType>> StreamRealSense::parameters(){
+        std::vector<flow::ConfigParameterDef> StreamRealSense::parameters(){
             return {
-                {"devide_id", flow::Block::eParameterType::INTEGER} 
+                {"devide_id", flow::ConfigParameterDef::eParameterType::INTEGER} 
             };
         }
 

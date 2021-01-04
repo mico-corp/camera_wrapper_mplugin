@@ -36,31 +36,27 @@ namespace mico{
             } 
         };
 
-        bool StreamWebcam::configure(std::unordered_map<std::string, std::string> _params) {
+        bool StreamWebcam::configure(std::vector<flow::ConfigParameterDef> _params) {
             if(isRunningLoop()) // Cant configure if already running.
                 return false;            
 
-            int deviceId = 0;
-            for(auto &p:_params){
-                if(p.first == "device_id")
-                    deviceId = atoi(p.second.c_str());
-            }
-            
-            camera_ = new cv::VideoCapture();
+            if(auto param = getParamByName(_params, "device_id"); param){
+                camera_ = new cv::VideoCapture();
 
-            if (!camera_->open(deviceId, cv::CAP_DSHOW)) {
-                if (!camera_->open(deviceId, cv::CAP_GSTREAMER)) {
-                    return false;
+                if (!camera_->open(param.value().asInteger(), cv::CAP_DSHOW)) {
+                    if (!camera_->open(param.value().asInteger(), cv::CAP_GSTREAMER)) {
+                        return false;
+                    }
                 }
-            }
 
-            return camera_->isOpened();
+                return camera_->isOpened();
+            }
 
         }
         
-        std::vector<std::pair<std::string, flow::Block::eParameterType>> StreamWebcam::parameters(){
+        std::vector<flow::ConfigParameterDef> StreamWebcam::parameters(){
             return {
-                {"device_id", flow::Block::eParameterType::INTEGER}
+                {"device_id", flow::ConfigParameterDef::eParameterType::INTEGER, 0}
             };
         }
 

@@ -36,7 +36,7 @@ namespace mico{
             createPipe("Pose", "mat44");
         }
 
-        bool StreamDataset::configure(std::unordered_map<std::string, std::string> _params) {
+        bool StreamDataset::configure(std::vector<flow::ConfigParameterDef> _params) {
             if(isRunningLoop()) // Cant configure if already running.
                 return false;            
 
@@ -68,9 +68,9 @@ namespace mico{
 
         }
         
-        std::vector<std::pair<std::string, flow::Block::eParameterType>> StreamDataset::parameters(){
+        std::vector<flow::ConfigParameterDef> StreamDataset::parameters(){
             return {
-                {"color", flow::Block::eParameterType::STRING}, {"depth", flow::Block::eParameterType::STRING}, {"calibration", flow::Block::eParameterType::STRING}, {"groundtruth", flow::Block::eParameterType::STRING}
+                {"color", flow::ConfigParameterDef::eParameterType::STRING}, {"depth", flow::ConfigParameterDef::eParameterType::STRING}, {"calibration", flow::ConfigParameterDef::eParameterType::STRING}, {"groundtruth", flow::ConfigParameterDef::eParameterType::STRING}
             };
         }
 
