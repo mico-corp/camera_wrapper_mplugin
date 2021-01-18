@@ -25,7 +25,7 @@
 
 namespace mico{
         StreamWebcam::StreamWebcam(){
-            createPipe("Color", "image");
+            createPipe<cv::Mat>("Color");
         }
 
 
