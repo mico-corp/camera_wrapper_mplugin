@@ -23,7 +23,7 @@
 #include <flow/flow.h>
 #include <mico/cameras/flow/StreamWebcam.h>
 
-using namespace mico;
+using namespace mico::cameras;
 using namespace flow;
 
 extern "C" FLOW_FACTORY_EXPORT flow::PluginNodeCreator* factory(){

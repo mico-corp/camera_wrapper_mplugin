@@ -24,23 +24,24 @@
 #include <flow/Outpipe.h>
 
 namespace mico{
-        StreamWebcam::StreamWebcam(){
+    namespace cameras {
+        StreamWebcam::StreamWebcam() {
             createPipe<cv::Mat>("Color");
         }
 
 
-        StreamWebcam::~StreamWebcam(){
-            if(camera_){
+        StreamWebcam::~StreamWebcam() {
+            if (camera_) {
                 camera_->release();
                 delete camera_;
-            } 
+            }
         };
 
         bool StreamWebcam::configure(std::vector<flow::ConfigParameterDef> _params) {
-            if(isRunningLoop()) // Cant configure if already running.
-                return false;            
+            if (isRunningLoop()) // Cant configure if already running.
+                return false;
 
-            if(auto param = getParamByName(_params, "device_id"); param){
+            if (auto param = getParamByName(_params, "device_id"); param) {
                 camera_ = new cv::VideoCapture();
 
                 if (!camera_->open(param.value().asInteger(), cv::CAP_DSHOW)) {
@@ -53,21 +54,22 @@ namespace mico{
             }
 
         }
-        
-        std::vector<flow::ConfigParameterDef> StreamWebcam::parameters(){
+
+        std::vector<flow::ConfigParameterDef> StreamWebcam::parameters() {
             return {
                 {"device_id", flow::ConfigParameterDef::eParameterType::INTEGER, 0}
             };
         }
 
         void StreamWebcam::loopCallback() {
-            while(isRunningLoop()){
-                if(auto pipe = getPipe("Color"); pipe->registrations() !=0 ){
+            while (isRunningLoop()) {
+                if (auto pipe = getPipe("Color"); pipe->registrations() != 0) {
                     cv::Mat image;
                     (*camera_) >> image;
-                    pipe->flush(image);     
+                    pipe->flush(image);
                 }
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));
-            }         
+            }
         }
+    }
 }
