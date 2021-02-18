@@ -31,20 +31,25 @@ namespace mico{
 
     class StreamDataset:public flow::Block{
     public:
+        /// Get name of block
         virtual std::string name() const override {return "Dataset Streamer";}
         
         StreamDataset();
         // ~StreamDataset(){};
         
+        /// Configure block with given parameters.
         virtual bool configure(std::vector<flow::ConfigParameterDef> _params) override;
+        /// Get list of parameters of the block
         std::vector<flow::ConfigParameterDef> parameters() override;
 
+        /// Returns a brief description of the block
         std::string description() const override {return    "Streamer block that reads data from a dataset (in split files format) and streams it syncronously."
                                                             "It assumes that all the files are sequentially indexed.\n"
                                                             "   - Outputs: \n";};
         
 
-        virtual QWidget * customWidget() override;
+        virtual /// Get custom view widget to be display in the graph
+        QWidget * customWidget() override;
 
     protected:
         virtual void loopCallback() override;

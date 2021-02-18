@@ -28,31 +28,42 @@
 #include <opencv2/opencv.hpp>
 
 namespace mico{
+    namespace cameras{
+        /// Mico block that opens USB camera devices and flush images out on a stream.
+        /// @ingroup  mico_cameras
+        class StreamWebcam:public flow::Block{
+        public:
+            /// Get name of block
+            virtual std::string name() const override {return "Streamer Webcam";}     
+            /// Retreive icon of block    
+                virtual QIcon icon() const override { 
+                return QIcon((flow::Persistency::resourceDir() + "cameras/webcam_icon.svg").c_str());
+            }
+            
+            /// Base constructor
+            StreamWebcam();
 
-    class StreamWebcam:public flow::Block{
-    public:
-        virtual std::string name() const override {return "Streamer Webcam";}     
-        virtual QIcon icon() const override { 
-            return QIcon((flow::Persistency::resourceDir() + "cameras/webcam_icon.svg").c_str());
-        }
-        
-        StreamWebcam();
-        ~StreamWebcam();
-        
-        virtual bool configure(std::vector<flow::ConfigParameterDef> _params) override;
-        std::vector<flow::ConfigParameterDef> parameters() override;
-        
-        std::string description() const override {return    "Streamer block that reads from usb ready cameras "
-                                                            "connected to the computer and streams its images.\n"
-                                                            "   - Outputs: \n";};
-                                                            
-    protected:
-        virtual void loopCallback() override;
+            /// Base destructor
+            ~StreamWebcam();
+            
+            /// Configure block with given parameters.
+            virtual bool configure(std::vector<flow::ConfigParameterDef> _params) override;
 
-    private:
-        cv::VideoCapture *camera_ = nullptr;
-    };
+            /// Get list of parameters of the block
+            std::vector<flow::ConfigParameterDef> parameters() override;
+            
+            /// Returns a brief description of the block
+            std::string description() const override {return    "Streamer block that reads from usb ready cameras "
+                                                                "connected to the computer and streams its images.\n"
+                                                                "   - Outputs: \n";};
+                                                                
+        protected:
+            virtual void loopCallback() override;
 
+        private:
+            cv::VideoCapture *camera_ = nullptr;
+        };
+    }
 }
 
 

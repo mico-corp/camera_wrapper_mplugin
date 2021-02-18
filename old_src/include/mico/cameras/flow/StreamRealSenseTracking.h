@@ -36,8 +36,10 @@ namespace mico{
 
     class StreamRealSenseTracking : public flow::Block{
     public:
+        /// Get name of block
         virtual std::string name() const override {return "RealSense T265 Streamer";}     
-        virtual QIcon icon() const override { 
+        /// Retreive icon of block    
+            virtual QIcon icon() const override { 
             std::string userDir(getenv("USER"));
             std::string resourcesDir = "/home/"+userDir+"/.flow/plugins/resources/cameras/";
             return QIcon((resourcesDir+"realsense_icon.png").c_str());
@@ -46,13 +48,17 @@ namespace mico{
         StreamRealSenseTracking();
         ~StreamRealSenseTracking(){};
         
+        /// Configure block with given parameters.
         virtual bool configure(std::vector<flow::ConfigParameterDef> _params) override;
+        /// Get list of parameters of the block
         std::vector<flow::ConfigParameterDef> parameters() override;
     
+        /// Returns a brief description of the block
         std::string description() const override {return    "Streamer block that reads from an Intel realsense device and streams its flows of images and poses.\n"
                                                             "   - Outputs: \n";};
 
-        virtual QWidget * customWidget() override;
+        virtual /// Get custom view widget to be display in the graph
+        QWidget * customWidget() override;
     protected:
         virtual void loopCallback() override;
 
